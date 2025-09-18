@@ -4,16 +4,16 @@ phases:
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
-      - aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin <AWS_ACCOUNT_ID>.dkr.ecr.us-west-2.amazonaws.com
+      - aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 539247450360.dkr.ecr.us-west-2.amazonaws.com/brain-tasks-app
   build:
     commands:
       - echo Building Docker image...
       - docker build -t brain-tasks-app .
-      - docker tag brain-tasks-app:latest <AWS_ACCOUNT_ID>.dkr.ecr.us-west-2.amazonaws.com/brain-tasks-app:latest
-      - docker push <AWS_ACCOUNT_ID>.dkr.ecr.us-west-2.amazonaws.com/brain-tasks-app:latest
+      - docker tag brain-tasks-app:latest 539247450360.dkr.ecr.us-west-2.amazonaws.com/brain-tasks-app:latest
+      - docker push 539247450360.dkr.ecr.us-west-2.amazonaws.com/brain-tasks-app:latest
   post_build:
     commands:
       - echo Writing image definition file...
-      - printf '[{"name":"brain-tasks-app","imageUri":"%s"}]' <AWS_ACCOUNT_ID>.dkr.ecr.us-west-2.amazonaws.com/brain-tasks-app:latest > imagedefinitions.json
+      - printf '[{"name":"brain-tasks-app","imageUri":"%s"}] 539247450360.dkr.ecr.us-west-2.amazonaws.com/brain-tasks-app > imagedefinitions.json
 artifacts:
   files: imagedefinitions.json

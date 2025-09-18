@@ -1,30 +1,20 @@
-# ---- Build stage ----
 FROM public.ecr.aws/docker/library/node:18-alpine AS builder
-
-# Set working directory
 WORKDIR /app
 
-# Copy package manifests only
 COPY package.json package-lock.json ./
 
-# Install dependencies fresh inside container
+RUN npm cache clean --force
 RUN npm install
+RUN npm rebuild
 
-# Copy source code
+# Debug: List .bin contents to verify react-scripts presence
+RUN ls -la node_modules/.bin
+
 COPY . .
-
-# Build the React app
 RUN npm run build
 
-# ---- Runtime stage ----
 FROM public.ecr.aws/docker/library/nginx:alpine
-
-# Copy built app from builder stage to nginx html folder
 COPY --from=builder /app/build /usr/share/nginx/html
-
-# Expose port 3000 (optional, nginx default is 80)
 EXPOSE 3000
-
-# Run nginx in foreground
 CMD ["nginx", "-g", "daemon off;"]
 

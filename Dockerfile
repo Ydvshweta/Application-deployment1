@@ -1,20 +1,20 @@
 FROM public.ecr.aws/docker/library/node:18-alpine AS builder
 WORKDIR /app
 
-COPY package.json package-lock.json ./
-
-RUN npm cache clean --force
+# Copy package files and install dependencies
+COPY package*.json ./
 RUN npm install
-RUN npm rebuild
 
-# Debug: List .bin contents to verify react-scripts presence
-RUN ls -la node_modules/.bin
-
+# Copy all files and build the app
 COPY . .
 RUN npm run build
 
-FROM public.ecr.aws/docker/library/nginx:alpine
-COPY --from=builder /app/build /usr/share/nginx/html
+# Install a lightweight static server to serve the build
+RUN npm install -g serve
+
+# Expose port 3000
 EXPOSE 3000
-CMD ["nginx", "-g", "daemon off;"]
+
+# Start the app
+CMD ["serve", "-s", "build", "-l", "3000"]
 

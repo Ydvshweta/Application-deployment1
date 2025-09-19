@@ -1,8 +1,10 @@
 version: 0.0
-resources:
-  - MyEKSDeployment
-hooks:
-  AfterInstall:
-    - location: scripts/deploy.sh
-      timeout: 300
-      runas: root
+Resources:
+  - myEKSDeployment:
+      Type: AWS::EKS::Manifest
+      Properties:
+        ClusterName: brain-tasks-cluster
+        ManifestFilePaths:
+          - deployment.yml
+          - service.yml
+

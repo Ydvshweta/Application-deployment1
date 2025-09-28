@@ -16,4 +16,9 @@ phases:
       - echo Writing image definition file...
       - printf '[{"name":"brain-tasks-app","imageUri":"%s"}]' 539247450360.dkr.ecr.us-west-2.amazonaws.com/brain-tasks-app:latest > imagedefinitions.json
 artifacts:
-  files: imagedefinitions.json
+  files:
+    - imagedefinitions.json
+    - service.yml
+    - deploy.sh
+  discard-paths: yes
+

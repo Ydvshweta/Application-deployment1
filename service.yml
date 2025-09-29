@@ -8,5 +8,5 @@ spec:
     app: brain-tasks-app
   ports:
     - protocol: TCP
-      port: 3000        # external LoadBalancer port
-      targetPort: 3000    # container (nginx) port
+      port: 80        # external LoadBalancer port
+      targetPort: 80    # container (nginx) port
